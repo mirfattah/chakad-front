@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+
+@font-face {
+  font-family: 'dana';
+
+  src: url('../public/font/DANA-FANUM-MEDIUM.TTF');
+}
+@font-face {
+  font-family: 'danalight';
+  src: url('../public/font/DANA-FANUM-LIGHT.TTF');
+
+}
+
+
 :root {
   --background: hwb(0 100% 0%);
   --foreground: red;
@@ -14,7 +27,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: rgb(230,233,241);
+    --background: #e6e9f1;
     --foreground: #ededed;
   }
 }
@@ -22,5 +35,9 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  
+}
+
+* {
+  font-family: 'danalight';
 }
