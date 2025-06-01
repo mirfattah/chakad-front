@@ -1,18 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import {
-  ChevronDown,
-  Mountain,
-  MapPin,
-  Star,
-  Calendar,
-  Users,
-  ArrowRight,
-  Menu,
-  X,
-  Camera,
-  Heart,
-  Share2,
   Cloud,
   Sun,
   CloudRain,
@@ -20,8 +8,6 @@ import {
   Thermometer,
   Eye,
   Droplets,
-  SquaresSubtractIcon,
-  Check,
 } from "lucide-react";
 import HeroSection from "./components/Home/HeroSection";
 import Navbar from "./components/Navbar";
@@ -84,105 +70,6 @@ const MountainHomepage = () => {
     },
   ];
 
-  const triviaQuestions = [
-    {
-      question: "بلندترین کوه جهان چیست؟",
-      options: ["کی۲", "اورست", "مون بلان", "ماکالو"],
-      correctAnswer: "اورست",
-    },
-    {
-      question: "کوه دماوند در کدام کشور قرار دارد؟",
-      options: ["ترکیه", "هند", "ایران", "افغانستان"],
-      correctAnswer: "ایران",
-    },
-    {
-      question: "کدام سبک صعود نیاز به ابزار کمکی در دیواره‌نوردی ندارد؟",
-      options: ["صعود آزاد", "صعود مصنوعی", "بولدرینگ", "یخ‌نوردی"],
-      correctAnswer: "صعود آزاد",
-    },
-  ];
-
-  const TriviaGame = () => {
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [score, setScore] = useState(0);
-    const [showResult, setShowResult] = useState(false);
-
-    const currentQuestion = triviaQuestions[currentQuestionIndex];
-
-    const handleAnswer = (option) => {
-      setSelectedOption(option);
-
-      setTimeout(() => {
-        if (option === currentQuestion.correctAnswer) {
-          setScore(score + 1);
-        }
-
-        if (currentQuestionIndex + 1 < triviaQuestions.length) {
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-          setSelectedOption(null);
-        } else {
-          setShowResult(true);
-        }
-      }, 1000);
-    };
-
-    const resetGame = () => {
-      setCurrentQuestionIndex(0);
-      setSelectedOption(null);
-      setScore(0);
-      setShowResult(false);
-    };
-
-    return (
-      <div className="bg-white rounded-2xl p-8 shadow-lg">
-        {showResult ? (
-          <div>
-            <h3
-              className="text-2xl font-bold mb-4"
-              style={{ color: "#2a4a62" }}
-            >
-              امتیاز شما: {score} از {triviaQuestions.length}
-            </h3>
-            <button
-              className="px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
-              style={{ backgroundColor: "#7ab0c8", color: "white" }}
-              onClick={resetGame}
-            >
-              بازی دوباره
-            </button>
-          </div>
-        ) : (
-          <div>
-            <h4
-              className="text-xl font-semibold mb-6"
-              style={{ color: "#446b84" }}
-            >
-              {currentQuestion.question}
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {currentQuestion.options.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleAnswer(option)}
-                  disabled={!!selectedOption}
-                  className={`py-3 px-6 rounded-xl font-semibold transition-all duration-200 ${
-                    selectedOption === option
-                      ? option === currentQuestion.correctAnswer
-                        ? "bg-green-500 text-white"
-                        : "bg-red-500 text-white"
-                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
 
   // Simulate weather data fetch (in real app, you'd use OpenWeatherMap API)
   useEffect(() => {
@@ -417,29 +304,8 @@ const MountainHomepage = () => {
       </section>
       <PopularClimbingSite />
       <OneDayHiking />
-      <section
-        id="trivia"
-        className="py-20"
-        style={{ backgroundColor: "#b2c2d4" }}
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2
-            className="text-4xl md:text-5xl font-bold mb-6"
-            style={{ color: "#2a4a62" }}
-          >
-            بازی کوهستانی
-          </h2>
-          <p className="text-xl mb-8" style={{ color: "#446b84" }}>
-            دانش خود را درباره کوه‌ها و ماجراجویی محک بزنید!
-          </p>
-
-          <TriviaGame />
-        </div>
-      </section>
       <SuggestPeak/>
- 
       <Gallery />
-      {/* Footer */}
       <Footer />
       <style jsx>{`
         @keyframes fade-in {
@@ -485,21 +351,5 @@ const MountainHomepage = () => {
   );
 };
 
-// Missing ArrowLeft import - adding it here
-const ArrowLeft = ({ className }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M10 19l-7-7m0 0l7-7m-7 7h18"
-    />
-  </svg>
-);
 
 export default MountainHomepage;
