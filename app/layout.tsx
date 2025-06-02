@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: " چکاد ",
+  title: " چکاد  | معرفی کوه ها و سایت های سنگنوردی ایران",
   description: "  راهنمای قله ها و مسیر های سنگنوردی ایران  ",
 };
 

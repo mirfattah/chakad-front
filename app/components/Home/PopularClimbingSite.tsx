@@ -1,31 +1,35 @@
 import { MapPin, Star } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 function PopularClimbingSite() {
   const popularClimbingSites = [
     {
       name: " پل خواب",
-      location: "پارک ملی یوسمیتی، آمریکا",
+      location: " البرز  ",
       rating: 4.9,
       image:
         "https://images.unsplash.com/photo-1580584126903-c17d76b52e67?w=400&h=300&fit=crop",
       type: "صخره‌نوردی کلاسیک",
+      slug: "PoleKhab",
     },
     {
       name: "بند یخچال",
-      location: "یوتا، آمریکا",
+      location: " تهران",
       rating: 4.7,
       image:
         "https://images.unsplash.com/photo-1508610048659-a06b669e3880?w=400&h=300&fit=crop",
       type: "بولدرینگ",
+      slug: "bandYakhchal",
     },
     {
       name: "سیرا",
-      location: "اسپانیا",
+      location: "البرز",
       rating: 4.8,
       image:
         "https://images.unsplash.com/photo-1606406055965-3de64be208d2?w=400&h=300&fit=crop",
       type: "اسپرت",
+      slug: "sira",
     },
   ];
   return (
@@ -87,21 +91,37 @@ function PopularClimbingSite() {
                   <MapPin className="w-4 h-4 inline ml-1" />
                   {site.location}
                 </p>
-                <button
-                  className="w-full py-2 rounded-lg font-semibold transition-colors duration-300"
-                  style={{ backgroundColor: "#a6cddd", color: "#2a4a62" }}
-                  onMouseEnter={(e) =>
-                    (e.target.style.backgroundColor = "#7ab0c8")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.target.style.backgroundColor = "#a6cddd")
-                  }
-                >
-                  اطلاعات بیشتر
-                </button>
+                <Link href={`/climbingSites/${site.slug}`}>
+                  <button
+                    className="w-full py-2 rounded-lg font-semibold transition-colors duration-300"
+                    style={{ backgroundColor: "#a6cddd", color: "#2a4a62" }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#7ab0c8")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#a6cddd")
+                    }
+                  >
+                    اطلاعات بیشتر
+                  </button>
+                </Link>
               </div>
             </div>
           ))}
+        </div>
+        <div className="text-center mt-12">
+          <Link href={`/climbingSites`}>
+            <button
+              className=" cursor-pointer px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+              style={{
+                backgroundColor: "#7ab0c8",
+                color: "white",
+                boxShadow: "0 4px 15px rgba(122, 176, 200, 0.3)",
+              }}
+            >
+              مشاهده همه سایت های سنگنوردی
+            </button>
+          </Link>
         </div>
       </div>
     </section>

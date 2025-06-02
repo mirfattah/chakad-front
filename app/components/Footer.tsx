@@ -90,8 +90,9 @@ function Footer() {
           </div>
         </div>
         <div className="border-t mt-8 pt-8" style={{ borderColor: "#446b84" }}>
+
           <p className="text-center" style={{ color: "#a6cddd" }}>
-            © ۱۴۰۳ قله کوهستان. تمام حقوق محفوظ است.
+            ساخته شده توسط عشق به کوهستان
           </p>
         </div>
       </div>

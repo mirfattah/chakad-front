@@ -1,9 +1,20 @@
-"use client"
+"use client";
 import { Menu, Mountain, X } from "lucide-react";
+import Link from "next/link";
 import React, { useState } from "react";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  type MenuItem = {
+    name: string;
+    href: string;
+  };
+  const menu: MenuItem[] = [
+    { name: "خانه", href: "/" },
+    { name: "قله ها", href: "/peaks" },
+    { name: "سایت های سنگنوردی", href: "/climbingSites" },
+  ];
+  
   return (
     <nav
       className="fixed top-0 w-full z-50 transition-all duration-300"
@@ -23,73 +34,17 @@ function Navbar() {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8 space-x-reverse">
-            <a
-              href="#home"
-              className="transition-colors duration-300"
-              style={{ color: "#446b84" }}
-              onMouseEnter={(e) => (e.target.style.color = "#7ab0c8")}
-              onMouseLeave={(e) => (e.target.style.color = "#446b84")}
-            >
-              خانه
-            </a>
-            <a
-              href="#weather"
-              className="transition-colors duration-300"
-              style={{ color: "#446b84" }}
-              onMouseEnter={(e) => (e.target.style.color = "#7ab0c8")}
-              onMouseLeave={(e) => (e.target.style.color = "#446b84")}
-            >
-              آب و هوا
-            </a>
-            <a
-              href="#destinations"
-              className="transition-colors duration-300"
-              style={{ color: "#446b84" }}
-              onMouseEnter={(e) => (e.target.style.color = "#7ab0c8")}
-              onMouseLeave={(e) => (e.target.style.color = "#446b84")}
-            >
-              مقاصد
-            </a>
-            <a
-              href="#gallery"
-              className="transition-colors duration-300"
-              style={{ color: "#446b84" }}
-              onMouseEnter={(e) => (e.target.style.color = "#7ab0c8")}
-              onMouseLeave={(e) => (e.target.style.color = "#446b84")}
-            >
-              گالری
-            </a>
-            <a
-              href="#about"
-              className="transition-colors duration-300"
-              style={{ color: "#446b84" }}
-              onMouseEnter={(e) => (e.target.style.color = "#7ab0c8")}
-              onMouseLeave={(e) => (e.target.style.color = "#446b84")}
-            >
-              درباره ما
-            </a>
-            <a
-              href="#contact"
-              className="transition-colors duration-300"
-              style={{ color: "#446b84" }}
-              onMouseEnter={(e) => (e.target.style.color = "#7ab0c8")}
-              onMouseLeave={(e) => (e.target.style.color = "#446b84")}
-            >
-              تماس
-            </a>
-            <button
-              className="px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
-              style={{
-                backgroundColor: "#7ab0c8",
-                color: "white",
-                boxShadow: "0 4px 15px rgba(122, 176, 200, 0.3)",
-              }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#6585a0")}
-              onMouseLeave={(e) => (e.target.style.backgroundColor = "#7ab0c8")}
-            >
-              رزرو کنید
-            </button>
+          <div className="hidden md:flex gap-6">
+            {menu.map((item) => {
+              return (
+                <Link
+                  className="text-[#446b84]  hover:text-[#7ab0c8]"
+                  href={item.href}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Mobile Menu Button */}

@@ -1,4 +1,5 @@
 import { Mountain } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 function PopularPeaks() {
@@ -59,7 +60,6 @@ function PopularPeaks() {
     },
   ];
 
-
   return (
     <section
       id="iran-peaks"
@@ -79,7 +79,7 @@ function PopularPeaks() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid  md:grid-cols-3 gap-8">
           {iranPeaks.map((peak, index) => (
             <div
               key={index}
@@ -110,9 +110,9 @@ function PopularPeaks() {
                 <p className="text-sm mb-4" style={{ color: "#446b84" }}>
                   {peak.info}
                 </p>
-                <a href={`/peaks/${peak.slug}`}>
+                <Link href={`/peaks/${peak.slug}`}>
                   <button
-                    className="w-full py-2 rounded-lg font-semibold transition-colors duration-300"
+                    className=" cursor-pointer w-full py-2 rounded-lg font-semibold transition-colors duration-300"
                     style={{ backgroundColor: "#a6cddd", color: "#2a4a62" }}
                     onMouseEnter={(e) =>
                       (e.target.style.backgroundColor = "#7ab0c8")
@@ -123,23 +123,25 @@ function PopularPeaks() {
                   >
                     مشاهده جزئیات
                   </button>
-                </a>
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <button
-            className="px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
-            style={{
-              backgroundColor: "#7ab0c8",
-              color: "white",
-              boxShadow: "0 4px 15px rgba(122, 176, 200, 0.3)",
-            }}
-          >
-            مشاهده همه قله‌ها
-          </button>
+          <Link href={`/peaks`}>
+            <button
+              className=" cursor-pointer px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+              style={{
+                backgroundColor: "#7ab0c8",
+                color: "white",
+                boxShadow: "0 4px 15px rgba(122, 176, 200, 0.3)",
+              }}
+            >
+              مشاهده همه قله‌ها
+            </button>
+          </Link>
         </div>
       </div>
     </section>
