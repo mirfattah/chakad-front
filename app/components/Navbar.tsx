@@ -1,10 +1,24 @@
 "use client";
 import { Menu, Mountain, X } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+
+    const [scrollY, setScrollY] = useState(0);
+  
+
+  
+    useEffect(() => {
+      const handleScroll = () => setScrollY(window.scrollY);
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+  
+
+
   type MenuItem = {
     name: string;
     href: string;
@@ -35,9 +49,10 @@ function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-6">
-            {menu.map((item) => {
+            {menu.map((item, index) => {
               return (
                 <Link
+                key={index}
                   className="text-[#446b84]  hover:text-[#7ab0c8]"
                   href={item.href}
                 >

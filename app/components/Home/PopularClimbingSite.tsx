@@ -95,11 +95,11 @@ function PopularClimbingSite() {
                   <button
                     className="w-full py-2 rounded-lg font-semibold transition-colors duration-300"
                     style={{ backgroundColor: "#a6cddd", color: "#2a4a62" }}
-                    onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "#7ab0c8")
+                    onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) =>
+                      (e.currentTarget.style.backgroundColor = "#7ab0c8")
                     }
-                    onMouseLeave={(e) =>
-                      (e.target.style.backgroundColor = "#a6cddd")
+                    onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) =>
+                      (e.currentTarget.style.backgroundColor = "#a6cddd")
                     }
                   >
                     اطلاعات بیشتر

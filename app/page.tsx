@@ -8,10 +8,9 @@ import {
   Thermometer,
   Eye,
   Droplets,
+  LucideIcon,
 } from "lucide-react";
 import HeroSection from "./components/Home/HeroSection";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import PopularPeaks from "./components/Home/PopularPeaks";
 import PopularClimbingSite from "./components/Home/PopularClimbingSite";
 import OneDayHiking from "./components/Home/OneDayHiking";
@@ -19,20 +18,41 @@ import Gallery from "./components/Home/Gallery";
 import Introduce from "./components/Home/Introduce";
 import SuggestPeak from "./components/SuggestPeak";
 
+// Define interfaces for type safety
+interface Peak {
+  name: string;
+  nameEn: string;
+  lat: number;
+  lon: number;
+  country: string;
+}
+
+interface Weather {
+  temp: number;
+  condition: string;
+  windSpeed: number;
+  humidity: number;
+  visibility: number;
+  icon: LucideIcon;
+  gradient: string;
+}
+
+interface WeatherData {
+  [key: string]: Weather;
+}
+
+interface WeatherCardProps {
+  peak: Peak;
+  weather: Weather;
+  isLoading: boolean;
+}
+
 const MountainHomepage = () => {
-  const [scrollY, setScrollY] = useState(0);
-
-  const [weatherData, setWeatherData] = useState({});
+  const [weatherData, setWeatherData] = useState<WeatherData>({});
   const [weatherLoading, setWeatherLoading] = useState(true);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+  
   // Popular mountain peaks for weather data
-  const popularPeaks = [
+  const popularPeaks: Peak[] = [
     {
       name: "اورست",
       nameEn: "Mount Everest",
@@ -70,7 +90,6 @@ const MountainHomepage = () => {
     },
   ];
 
-
   // Simulate weather data fetch (in real app, you'd use OpenWeatherMap API)
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -79,7 +98,7 @@ const MountainHomepage = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Mock weather data (replace with real API call)
-      const mockWeatherData = {
+      const mockWeatherData: WeatherData = {
         "Mount Everest": {
           temp: -25,
           condition: "برفی",
@@ -134,7 +153,7 @@ const MountainHomepage = () => {
     fetchWeatherData();
   }, []);
 
-  const WeatherCard = ({ peak, weather, isLoading }) => {
+  const WeatherCard = ({ peak, weather, isLoading }: WeatherCardProps) => {
     if (isLoading) {
       return (
         <div
@@ -216,8 +235,8 @@ const MountainHomepage = () => {
         fontFamily: "Tahoma, Arial, sans-serif",
       }}
     >
-      <Navbar />
-      <HeroSection />َ
+  
+      <HeroSection />
       <Introduce />
       <PopularPeaks />
       <section
@@ -306,50 +325,8 @@ const MountainHomepage = () => {
       <OneDayHiking />
       <SuggestPeak/>
       <Gallery />
-      <Footer />
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in {
-          animation: fade-in 1s ease-out;
-        }
-
-        .animate-bounce {
-          animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-          0%,
-          20%,
-          53%,
-          80%,
-          100% {
-            transform: translate3d(-50%, 0, 0);
-          }
-          40%,
-          43% {
-            transform: translate3d(-50%, -10px, 0);
-          }
-          70% {
-            transform: translate3d(-50%, -5px, 0);
-          }
-          90% {
-            transform: translate3d(-50%, -2px, 0);
-          }
-        }
-      `}</style>
     </div>
   );
 };
-
 
 export default MountainHomepage;

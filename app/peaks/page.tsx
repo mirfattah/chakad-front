@@ -5,11 +5,9 @@ import {
   Search,
   Filter,
   MapPin,
-  Ruler,
   Star,
   Clock,
   Users,
-  Thermometer,
   Wind,
   Eye,
   Droplets,
@@ -19,6 +17,58 @@ import {
   ChevronDown,
   X,
 } from "lucide-react";
+import Link from "next/link";
+
+
+export async function generateStaticParams() {
+  return [
+    { name: 'site1' },
+    { name: 'site2' },
+    { name: 'site3' },
+    // Add all the climbing site names you want to pre-generate
+  ];
+}
+
+// Type definitionsgit fsdkfjsdkafjkdsjfksdaafsdinterface Peak {
+  id: number;
+  name: string;
+  nameEn: string;
+  height: number;
+  country: string;
+  continent: string;
+  difficulty: string;
+  climbingTime: string;
+  bestSeason: string;
+  firstAscent: string;
+  climbers: string;
+  image: string;
+  lat: number;
+  lon: number;
+  description: string;
+  features: string[];
+}
+
+interface WeatherInfo {
+  temp: number;
+  condition: string;
+  windSpeed: number;
+  humidity: number;
+  visibility: number;
+  icon: React.ComponentType<{ className?: string }>;
+  gradient: string;
+}
+
+interface WeatherData {
+  [key: string]: WeatherInfo;
+}
+
+interface DifficultyOrder {
+  [key: string]: number;
+}
+
+interface PeakCardProps {
+  peak: Peak;
+}
 
 const PeaksListingPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,11 +76,11 @@ const PeaksListingPage = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [sortBy, setSortBy] = useState("height");
   const [showFilters, setShowFilters] = useState(false);
-  const [weatherData, setWeatherData] = useState({});
+  const [weatherData, setWeatherData] = useState<WeatherData>({});
   const [weatherLoading, setWeatherLoading] = useState(true);
 
   // Only 3 mountain peaks
-  const allPeaks = [
+  const allPeaks: Peak[] = [
     {
       id: 1,
       name: "اورست",
@@ -64,7 +114,8 @@ const PeaksListingPage = () => {
       image: "/images/mont-blanc.jpg",
       lat: 45.8326,
       lon: 6.8652,
-      description: "بلندترین قله اروپای غربی، قله کلاسیک برای شروع کوهنوردی آلپی",
+      description:
+        "بلندترین قله اروپای غربی، قله کلاسیک برای شروع کوهنوردی آلپی",
       features: ["قله کلاسیک", "دسترسی آسان", "مناظر آلپ"],
     },
     {
@@ -83,38 +134,42 @@ const PeaksListingPage = () => {
       lat: -3.0674,
       lon: 37.3556,
       description: "بلندترین قله آفریقا، قله آزاد بدون نیاز به تجهیزات تکنیکی",
-      features: ["بدون نیاز به تجهیزات تکنیکی", "اکوسیستم‌های متنوع", "کلاهک یخی"],
+      features: [
+        "بدون نیاز به تجهیزات تکنیکی",
+        "اکوسیستم‌های متنوع",
+        "کلاهک یخی",
+      ],
     },
   ];
 
   // Mock weather data for 3 peaks
-  const mockWeatherData = {
-    "Mount Everest": { 
-      temp: -25, 
-      condition: "برفی", 
-      windSpeed: 45, 
-      humidity: 65, 
-      visibility: 2, 
-      icon: CloudRain, 
-      gradient: "from-blue-400 to-blue-600" 
+  const mockWeatherData: WeatherData = {
+    "Mount Everest": {
+      temp: -25,
+      condition: "برفی",
+      windSpeed: 45,
+      humidity: 65,
+      visibility: 2,
+      icon: CloudRain,
+      gradient: "from-blue-400 to-blue-600",
     },
-    "Mont Blanc": { 
-      temp: -8, 
-      condition: "آفتابی", 
-      windSpeed: 18, 
-      humidity: 45, 
-      visibility: 15, 
-      icon: Sun, 
-      gradient: "from-yellow-400 to-orange-500" 
+    "Mont Blanc": {
+      temp: -8,
+      condition: "آفتابی",
+      windSpeed: 18,
+      humidity: 45,
+      visibility: 15,
+      icon: Sun,
+      gradient: "from-yellow-400 to-orange-500",
     },
-    "Kilimanjaro": { 
-      temp: 15, 
-      condition: "ابری", 
-      windSpeed: 8, 
-      humidity: 65, 
-      visibility: 12, 
-      icon: Cloud, 
-      gradient: "from-green-400 to-blue-500" 
+    Kilimanjaro: {
+      temp: 15,
+      condition: "ابری",
+      windSpeed: 8,
+      humidity: 65,
+      visibility: 12,
+      icon: Cloud,
+      gradient: "from-green-400 to-blue-500",
     },
   };
 
@@ -128,12 +183,15 @@ const PeaksListingPage = () => {
 
   // Filter and sort peaks
   const filteredPeaks = allPeaks
-    .filter(peak => {
-      const matchesSearch = peak.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                           peak.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           peak.country.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesContinent = selectedContinent === "all" || peak.continent === selectedContinent;
-      const matchesDifficulty = selectedDifficulty === "all" || peak.difficulty === selectedDifficulty;
+    .filter((peak) => {
+      const matchesSearch =
+        peak.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        peak.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        peak.country.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesContinent =
+        selectedContinent === "all" || peak.continent === selectedContinent;
+      const matchesDifficulty =
+        selectedDifficulty === "all" || peak.difficulty === selectedDifficulty;
       return matchesSearch && matchesContinent && matchesDifficulty;
     })
     .sort((a, b) => {
@@ -143,37 +201,50 @@ const PeaksListingPage = () => {
         case "name":
           return a.name.localeCompare(b.name);
         case "difficulty":
-          const difficultyOrder = { "آسان": 1, "متوسط": 2, "سخت": 3, "بسیار سخت": 4 };
+          const difficultyOrder: DifficultyOrder = { 
+            آسان: 1, 
+            متوسط: 2, 
+            سخت: 3, 
+            "بسیار سخت": 4 
+          };
           return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
         case "climbers":
-          return parseInt(b.climbers.replace("+", "")) - parseInt(a.climbers.replace("+", ""));
+          return (
+            parseInt(b.climbers.replace("+", "")) -
+            parseInt(a.climbers.replace("+", ""))
+          );
         default:
           return 0;
       }
     });
 
-  const getDifficultyColor = (difficulty) => {
+  const getDifficultyColor = (difficulty: string): string => {
     switch (difficulty) {
-      case "آسان": return "#22c55e";
-      case "متوسط": return "#f59e0b";
-      case "سخت": return "#ef4444";
-      case "بسیار سخت": return "#dc2626";
-      default: return "#6b7280";
+      case "آسان":
+        return "#22c55e";
+      case "متوسط":
+        return "#f59e0b";
+      case "سخت":
+        return "#ef4444";
+      case "بسیار سخت":
+        return "#dc2626";
+      default:
+        return "#6b7280";
     }
   };
 
-  const PeakCard = ({ peak }) => {
-    const weather = weatherData[peak.nameEn];
-    
+  const PeakCard: React.FC<PeakCardProps> = ({ peak }) => {
+    const weather: WeatherInfo | undefined = weatherData[peak.nameEn];
+
     return (
-      <div 
+      <div
         className="rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl"
         style={{ backgroundColor: "white" }}
       >
         <div className="relative h-48 bg-gradient-to-br from-gray-300 to-gray-500">
           <div className="absolute inset-0 bg-black bg-opacity-20"></div>
           <div className="absolute top-4 right-4">
-            <div 
+            <div
               className="px-3 py-1 rounded-full text-sm font-semibold text-white"
               style={{ backgroundColor: getDifficultyColor(peak.difficulty) }}
             >
@@ -183,7 +254,9 @@ const PeaksListingPage = () => {
           <div className="absolute bottom-4 right-4 text-white">
             <div className="flex items-center mb-1">
               <Mountain className="w-4 h-4 ml-1" />
-              <span className="text-lg font-bold">{peak.height.toLocaleString()} م</span>
+              <span className="text-lg font-bold">
+                {peak.height.toLocaleString()} م
+              </span>
             </div>
             <div className="flex items-center">
               <MapPin className="w-3 h-3 ml-1" />
@@ -226,7 +299,9 @@ const PeaksListingPage = () => {
             </div>
             <div className="flex items-center text-sm">
               <Star className="w-4 h-4 ml-2" style={{ color: "#7ab0c8" }} />
-              <span style={{ color: "#446b84" }}>اولین صعود: {peak.firstAscent}</span>
+              <span style={{ color: "#446b84" }}>
+                اولین صعود: {peak.firstAscent}
+              </span>
             </div>
             <div className="flex items-center text-sm">
               <Sun className="w-4 h-4 ml-2" style={{ color: "#7ab0c8" }} />
@@ -235,47 +310,69 @@ const PeaksListingPage = () => {
           </div>
 
           {weather && !weatherLoading && (
-            <div className="grid grid-cols-3 gap-2 mb-4 p-3 rounded-lg" style={{ backgroundColor: "#f8fafc" }}>
+            <div
+              className="grid grid-cols-3 gap-2 mb-4 p-3 rounded-lg"
+              style={{ backgroundColor: "#f8fafc" }}
+            >
               <div className="text-center">
-                <Wind className="w-3 h-3 mx-auto mb-1" style={{ color: "#7ab0c8" }} />
-                <div className="text-xs" style={{ color: "#446b84" }}>{weather.windSpeed} km/h</div>
+                <Wind
+                  className="w-3 h-3 mx-auto mb-1"
+                  style={{ color: "#7ab0c8" }}
+                />
+                <div className="text-xs" style={{ color: "#446b84" }}>
+                  {weather.windSpeed} km/h
+                </div>
               </div>
               <div className="text-center">
-                <Droplets className="w-3 h-3 mx-auto mb-1" style={{ color: "#7ab0c8" }} />
-                <div className="text-xs" style={{ color: "#446b84" }}>{weather.humidity}%</div>
+                <Droplets
+                  className="w-3 h-3 mx-auto mb-1"
+                  style={{ color: "#7ab0c8" }}
+                />
+                <div className="text-xs" style={{ color: "#446b84" }}>
+                  {weather.humidity}%
+                </div>
               </div>
               <div className="text-center">
-                <Eye className="w-3 h-3 mx-auto mb-1" style={{ color: "#7ab0c8" }} />
-                <div className="text-xs" style={{ color: "#446b84" }}>{weather.visibility} km</div>
+                <Eye
+                  className="w-3 h-3 mx-auto mb-1"
+                  style={{ color: "#7ab0c8" }}
+                />
+                <div className="text-xs" style={{ color: "#446b84" }}>
+                  {weather.visibility} km
+                </div>
               </div>
             </div>
           )}
 
           <div className="flex flex-wrap gap-1 mb-4">
-            {peak.features.map((feature, index) => (
-              <span 
+            {peak.features.map((feature: string, index: number) => (
+              <span
                 key={index}
                 className="px-2 py-1 rounded-full text-xs"
-                style={{ backgroundColor: "rgba(122, 176, 200, 0.2)", color: "#446b84" }}
+                style={{
+                  backgroundColor: "rgba(122, 176, 200, 0.2)",
+                  color: "#446b84",
+                }}
               >
                 {feature}
               </span>
             ))}
           </div>
-
-          <button 
-            className="w-full py-2 rounded-lg font-semibold transition-all duration-300 hover:shadow-md"
-            style={{ backgroundColor: "#7ab0c8", color: "white" }}
-          >
-            مشاهده جزئیات
-          </button>
+          <Link href={`peaks/${peak.name}`}>
+            <button
+              className="w-full py-2 rounded-lg font-semibold transition-all duration-300 hover:shadow-md"
+              style={{ backgroundColor: "#7ab0c8", color: "white" }}
+            >
+              مشاهده جزئیات
+            </button>
+          </Link>
         </div>
       </div>
     );
   };
 
   return (
-    <div 
+    <div
       className="min-h-screen"
       style={{
         backgroundColor: "#e1e7f0",
@@ -288,10 +385,10 @@ const PeaksListingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              فهرست قله‌های جهان
+              فهرست قله‌های ایران
             </h1>
             <p className="text-xl md:text-2xl opacity-90 mb-8">
-              کشف بلندترین و زیباترین قله‌های کره زمین
+              کشف بلندترین و زیباترین قله‌های ایران
             </p>
             <div className="flex items-center justify-center">
               <div className="flex items-center px-4 py-2 rounded-full bg-white bg-opacity-20">
@@ -309,7 +406,10 @@ const PeaksListingPage = () => {
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             {/* Search */}
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: "#7ab0c8" }} />
+              <Search
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
+                style={{ color: "#7ab0c8" }}
+              />
               <input
                 type="text"
                 placeholder="جستجو قله، کشور یا نام انگلیسی..."
@@ -328,16 +428,28 @@ const PeaksListingPage = () => {
             >
               <Filter className="w-4 h-4 ml-2" />
               فیلترها
-              <ChevronDown className={`w-4 h-4 mr-2 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                className={`w-4 h-4 mr-2 transition-transform ${
+                  showFilters ? "rotate-180" : ""
+                }`}
+              />
             </button>
           </div>
 
           {/* Expanded Filters */}
           {showFilters && (
-            <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: "white" }}>
+            <div
+              className="mt-4 p-4 rounded-lg"
+              style={{ backgroundColor: "white" }}
+            >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold mb-2" style={{ color: "#2a4a62" }}>قاره</label>
+                  <label
+                    className="block text-sm font-semibold mb-2"
+                    style={{ color: "#2a4a62" }}
+                  >
+                    قاره
+                  </label>
                   <select
                     value={selectedContinent}
                     onChange={(e) => setSelectedContinent(e.target.value)}
@@ -351,7 +463,12 @@ const PeaksListingPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold mb-2" style={{ color: "#2a4a62" }}>سطح دشواری</label>
+                  <label
+                    className="block text-sm font-semibold mb-2"
+                    style={{ color: "#2a4a62" }}
+                  >
+                    سطح دشواری
+                  </label>
                   <select
                     value={selectedDifficulty}
                     onChange={(e) => setSelectedDifficulty(e.target.value)}
@@ -365,7 +482,12 @@ const PeaksListingPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold mb-2" style={{ color: "#2a4a62" }}>مرتب‌سازی بر اساس</label>
+                  <label
+                    className="block text-sm font-semibold mb-2"
+                    style={{ color: "#2a4a62" }}
+                  >
+                    مرتب‌سازی بر اساس
+                  </label>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
@@ -392,7 +514,10 @@ const PeaksListingPage = () => {
                     setSortBy("height");
                   }}
                   className="flex items-center text-sm px-3 py-1 rounded-lg transition-all duration-300"
-                  style={{ color: "#446b84", backgroundColor: "rgba(122, 176, 200, 0.1)" }}
+                  style={{
+                    color: "#446b84",
+                    backgroundColor: "rgba(122, 176, 200, 0.1)",
+                  }}
                 >
                   <X className="w-3 h-3 ml-1" />
                   پاک کردن فیلترها
@@ -408,22 +533,45 @@ const PeaksListingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="text-3xl font-bold mb-2" style={{ color: "#2a4a62" }}>
-                {Math.max(...filteredPeaks.map(p => p.height)).toLocaleString()}
+              <div
+                className="text-3xl font-bold mb-2"
+                style={{ color: "#2a4a62" }}
+              >
+                {Math.max(
+                  ...filteredPeaks.map((p) => p.height)
+                ).toLocaleString()}
               </div>
-              <div className="text-sm" style={{ color: "#446b84" }}>بلندترین قله (متر)</div>
+              <div className="text-sm" style={{ color: "#446b84" }}>
+                بلندترین قله (متر)
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold mb-2" style={{ color: "#2a4a62" }}>
-                {new Set(filteredPeaks.map(p => p.continent)).size}
+              <div
+                className="text-3xl font-bold mb-2"
+                style={{ color: "#2a4a62" }}
+              >
+                {new Set(filteredPeaks.map((p) => p.continent)).size}
               </div>
-              <div className="text-sm" style={{ color: "#446b84" }}>قاره مختلف</div>
+              <div className="text-sm" style={{ color: "#446b84" }}>
+                قاره مختلف
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold mb-2" style={{ color: "#2a4a62" }}>
-                {filteredPeaks.reduce((sum, p) => sum + parseInt(p.climbers.replace("+", "")), 0).toLocaleString()}+
+              <div
+                className="text-3xl font-bold mb-2"
+                style={{ color: "#2a4a62" }}
+              >
+                {filteredPeaks
+                  .reduce(
+                    (sum, p) => sum + parseInt(p.climbers.replace("+", "")),
+                    0
+                  )
+                  .toLocaleString()}
+                +
               </div>
-              <div className="text-sm" style={{ color: "#446b84" }}>کل کوهنوردان</div>
+              <div className="text-sm" style={{ color: "#446b84" }}>
+                کل کوهنوردان
+              </div>
             </div>
           </div>
         </div>
@@ -434,8 +582,14 @@ const PeaksListingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredPeaks.length === 0 ? (
             <div className="text-center py-16">
-              <Mountain className="w-16 h-16 mx-auto mb-4 opacity-50" style={{ color: "#7ab0c8" }} />
-              <h3 className="text-xl font-semibold mb-2" style={{ color: "#2a4a62" }}>
+              <Mountain
+                className="w-16 h-16 mx-auto mb-4 opacity-50"
+                style={{ color: "#7ab0c8" }}
+              />
+              <h3
+                className="text-xl font-semibold mb-2"
+                style={{ color: "#2a4a62" }}
+              >
                 هیچ قله‌ای یافت نشد
               </h3>
               <p style={{ color: "#446b84" }}>
@@ -455,22 +609,33 @@ const PeaksListingPage = () => {
       {/* Call to Action */}
       <div className="py-16" style={{ backgroundColor: "#c7d8e5" }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#2a4a62" }}>
+          <h2
+            className="text-3xl md:text-4xl font-bold mb-4"
+            style={{ color: "#2a4a62" }}
+          >
             آماده برای ماجراجویی بعدی خود هستید؟
           </h2>
           <p className="text-xl mb-8" style={{ color: "#446b84" }}>
             با ما برنامه صعود خود را طراحی کنید و به دنیای کوهستان قدم بگذارید
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
+            <button
               className="px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
-              style={{ backgroundColor: "#7ab0c8", color: "white", boxShadow: "0 4px 15px rgba(122, 176, 200, 0.3)" }}
+              style={{
+                backgroundColor: "#7ab0c8",
+                color: "white",
+                boxShadow: "0 4px 15px rgba(122, 176, 200, 0.3)",
+              }}
             >
               شروع برنامه‌ریزی
             </button>
-            <button 
+            <button
               className="px-8 py-3 rounded-lg font-semibold transition-all duration-300 border-2"
-              style={{ color: "#7ab0c8", borderColor: "#7ab0c8", backgroundColor: "transparent" }}
+              style={{
+                color: "#7ab0c8",
+                borderColor: "#7ab0c8",
+                backgroundColor: "transparent",
+              }}
             >
               تماس با راهنما
             </button>

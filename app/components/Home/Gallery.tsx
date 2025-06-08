@@ -1,9 +1,18 @@
-import { Camera, Heart, Share2 } from "lucide-react";
+import { Camera, Heart, Share2, X } from "lucide-react";
 import React, { useState } from "react";
 
+
+interface GalleryImage {
+  id: number;
+  src: string;
+  title: string;
+  category: string;
+}
+
+
 function Gallery() {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const galleryImages = [
+  const [selectedImage, setSelectedImage] = useState<GalleryImage |  null >(null);
+  const galleryImages   : GalleryImage[] = [
     {
       id: 1,
       src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop",
@@ -54,7 +63,7 @@ function Gallery() {
     },
   ];
 
-  const openImageModal = (image) => {
+  const openImageModal = (image :GalleryImage) => {
     setSelectedImage(image);
   };
 
